@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
   Button,
   Card,
@@ -5,6 +7,8 @@ import {
   Grid,
   TextField,
   Typography,
+  Backdrop,
+  CircularProgress,
 //   Select,
 } from "@mui/material";
 import styled from "styled-components";
@@ -14,11 +18,13 @@ const ChooseFile = styled.input`
 `;
 
 const Form = () => {
+    const [loading, setLoading] = useState(false);
   // Handle Form Submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
     var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
     var formdata = new FormData();
 
@@ -34,11 +40,19 @@ const Form = () => {
       body: formdata,
       redirect: "follow",
     };
-
+    setLoading(true)
     fetch( "https:/sonabyss.herokuapp.com/orgnisers", requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+    .then((response) => {
+        setLoading(false);
+        console.log(response);
+      })
+      .then((result) => {
+        setLoading(false);
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
   };
 
   return (
@@ -122,6 +136,12 @@ const Form = () => {
           </form>
         </CardContent>
       </Card>
+      <Backdrop
+            sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={loading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
     </div>
   );
 };
