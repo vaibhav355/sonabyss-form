@@ -13,7 +13,7 @@ const ChooseFile = styled.input`
   margin-bottom: 10px;
 `;
 
-const ClubEvent = (props) => {
+const Form = () => {
   // Handle Form Submit
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -126,4 +126,4 @@ const ClubEvent = (props) => {
   );
 };
 
-export default ClubEvent;
+export default Form;
