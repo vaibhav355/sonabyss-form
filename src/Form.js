@@ -1,90 +1,129 @@
-import React from "react";
+import {
+  Button,
+  Card,
+  CardContent,
+  Grid,
+  TextField,
+  Typography,
+//   Select,
+} from "@mui/material";
 import styled from "styled-components";
-import { Paper, TextField, Button } from "@mui/material";
-// import { user } from "../../localStore";
-// import { localUrl, prodUrl } from "../../config";
 
-const ClubForm = styled.form`
-  display: flex;
-  justify-content: center;
-  margin: 10em 5em;
+const ChooseFile = styled.input`
+  margin-bottom: 10px;
 `;
 
-const ClubPaper = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  background-color: red;
-
-  padding: 2em 3em;
-`;
-
-const Heading = styled.h1`
-  text-align: center;
-  margin-bottom: 10%;
-`;
-
-const ClubInput = styled(TextField)`
-  margin: 20px;
-`;
-
-const ChoosePoster = styled.input`
-  margin: 25px 0;
-`;
-
-const ClubDescription = styled(TextField)`
-  margin-bottom: 25px !important;
-  border-radius: 5px !important;
-`;
-
-const ClubButton = styled(Button)``;
-
-const CreateClub = () => {
+const ClubEvent = (props) => {
+  // Handle Form Submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    // var myHeaders = new Headers();
-    // myHeaders.append("Authorization", "Bearer " + user.authToken);
-    // // myHeaders.append("Content-Type", "application/json");
-    // console.log(e.target.poster.files);
-    // const formdata = new FormData();
-    // formdata.append("file", e.target.poster.files[0]);
 
-    // formdata.append("name", e.target.clubname.value);
-    // formdata.append("desc", e.target.desc.value);
+    var myHeaders = new Headers();
 
-    // var requestOptions = {
-    //   method: "POST",
-    //   headers: myHeaders,
-    //   body: formdata,
-    // };
+    var formdata = new FormData();
 
-    // fetch(prodUrl + "/clubs", requestOptions)
-    //   // fetch(localUrl, requestOptions)
-    //   .then((response) => response.json())
-    //   .then((result) => {
-    //     // localStorage.setItem("clubId", JSON.stringify(result));
-    //     console.log(result);
-    //   })
-    //   .catch((error) => console.log("error", error));
+    formdata.append("name", e.target.name.value);
+    formdata.append("image", e.target.pic.files[0]);
+    formdata.append("regNo", e.target.regno.value);
+    formdata.append("group", e.target.group.value);
+    formdata.append("position", e.target.position.value);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch( "https:/sonabyss.herokuapp.com/orgnisers", requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   };
+
   return (
-    <ClubForm onSubmit={handleSubmit}>
-      <ClubPaper>
-        <Heading>Club Registration</Heading>
-        <ClubInput
-          name="clubname"
-          label="Club Name"
-          variant="outlined"
-          required
-        />
-        <ChoosePoster name="poster" type="file" accept="image/*" />
-        <ClubDescription multiline rows={5} name="desc" label="Desc ..." />
-        <ClubButton type="submit" variant="contained">
-          Submit
-        </ClubButton>
-      </ClubPaper>
-    </ClubForm>
+    <div>
+      <Typography
+        gutterBottom
+        variant="h1"
+        align="center"
+        sx={{ fontFamily: "Roboto", fontWeight: "bold" }}
+      >
+        About
+      </Typography>
+
+      <Card sx={{ maxWidth: "450px", margin: "0 auto", padding: "20px 5px" }}>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <Grid container spacing={1}></Grid>
+            <Grid item xs={12}>
+              <TextField
+                sx={{ margin: "10px auto" }}
+                name="name"
+                label="Name"
+                placeholder="Enter Name"
+                variant="outlined"
+                fullWidth
+                autoComplete="off"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <ChooseFile name="pic" type="file" accept="image/*" />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                sx={{ margin: "10px auto" }}
+                name="regno"
+                label="Reg No"
+                // type={"number"}
+                placeholder="Enter Registration Number"
+                variant="outlined"
+                fullWidth
+                autoComplete="off"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                sx={{ margin: "10px auto" }}
+                name="group"
+                label="Group"
+                placeholder="Enter Your Group"
+                variant="outlined"
+                fullWidth
+                autoComplete="off"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                sx={{ margin: "10px auto" }}
+                name="position"
+                label="Position"
+                placeholder="Enter Your Position"
+                variant="outlined"
+                fullWidth
+                autoComplete="off"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+              >
+                Submit
+              </Button>
+            </Grid>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
-export default CreateClub;
+export default ClubEvent;
